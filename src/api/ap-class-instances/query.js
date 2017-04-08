@@ -5,8 +5,8 @@ const getQuery = params => {
 	// would need some sort of api dependency tree to prevent cyclic self-calls
 	const query =	"select i.instance_id from ap_class_instances i, ap_class_bookends bk, ap_class_sessions fs "
 					+ " where i.instance_id = bk.instance_id and bk.first_session = fs.session_id"
-					+ " and to_char(fs.session_datetime,'YYYY') = :year"
-	const substitutions = {year : String(params.season || moment().year())}
+					+ " and to_char(fs.session_datetime,'YYYY') = 2017"
+	const substitutions = {/*year : String(params.season || moment().year())*/}
 
 	return {query, substitutions}
 }
