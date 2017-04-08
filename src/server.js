@@ -43,6 +43,6 @@ var requestQueue = new RequestQueue(processRequest);
 
 app.use(requestQueue.queue);
 
-app.listen(8080, function() {
-	console.log('API Server listening on 8080!');
+app.listen(8081, function() {
+	console.log('API Server listening on 8081!');
 });
