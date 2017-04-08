@@ -4,6 +4,7 @@ import ini from 'ini';
 import fs from 'fs';
 
 import getApiValue from './getApiValue';
+import RequestQueue from './requestQueue';
 
 var app = express();
 
@@ -17,9 +18,10 @@ const getConnection = function() {
 	});
 };
 
-app.use((req, res) => {
+const processRequest = (req, res) => {
 	var conn;
-	getConnection().then(c => {
+	return getConnection().then(c => {
+		console.log("opened a connection")
 		conn = c;
 	}).then(() => {
 		return getApiValue(conn, req.path, req.query);
@@ -35,7 +37,11 @@ app.use((req, res) => {
 			else console.log("Closed connection.")
 		})
 	});
-})
+};
+
+var requestQueue = new RequestQueue(processRequest);
+
+app.use(requestQueue.queue);
 
 app.listen(8080, function() {
 	console.log('API Server listening on 8080!');
