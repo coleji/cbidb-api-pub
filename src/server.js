@@ -27,7 +27,7 @@ const processRequest = (req, res) => {
 		return getApiValue(conn, req.path, req.query);
 	}).then(result => {
 		console.log("got a result")
-		res.send(result);
+		res.send({ data: result});
 	}, err => {
 		console.log("Error getting API: " + err);
 		res.send("Error.")
