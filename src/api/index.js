@@ -1,18 +1,12 @@
 import apClassInstances from './ap-class-instances';
 
-const getQueryable = (api, query) => new Promise((resolve, reject) => {
-	console.log("routing:  " + api + "   ", query)
+const getSpec = (api) => {
 	switch(api) {
 	case "/ap-class-instances":
-		console.log("valid")
-		apClassInstances(query).then(results => {
-			resolve(results);
-		});
-		break;
+		return apClassInstances;
 	default:
-		console.log("invalid")
-		reject("Invalid endpoint.");
+		return null;
 	}
-});
+};
 
-export default getQueryable;
+export default getSpec;
