@@ -4,4 +4,6 @@ from ap_class_types t, ap_class_formats f, ap_class_instances i, ap_class_booken
 where i.instance_id = bk.instance_id and bk.first_session = fs.session_id
 and i.format_id = f.format_id and f.type_id = t.type_id
 and trunc(fs.session_datetime) = trunc(sysdate)
+and i.cancelled_datetime is null
+and nvl(i.hide_online,'N') <> 'Y'
 order by fs.session_datetime
