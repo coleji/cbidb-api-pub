@@ -29,7 +29,7 @@ const memLoad = redisClient => new Promise((resolve, reject) => {
 	})
 });
 
-const bestBy = () => moment().add(1, 'hours');
+const bestBy = () => moment().add(1, 'minutes');
 
 const getFreshWithDB = db => new Promise((resolve, reject) => {
 	return getQuery().then(query => db.execute(query.query, {}, (err, results) => {
