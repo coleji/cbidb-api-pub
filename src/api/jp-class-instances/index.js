@@ -32,7 +32,10 @@ const bestBy = () => moment().add(1, 'minutes');
 
 const getFreshWithDB = (db, query) => new Promise((resolve, reject) => {
 	return getQuery(query).then(query => db.execute(query, {}, (err, results) => {
-		if (err) reject(err);
+		if (err) {
+			console.log("Error running query: " + query);
+			reject(err);
+		}
 		else resolve(results);
 	}));
 });

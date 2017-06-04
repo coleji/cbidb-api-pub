@@ -19,8 +19,6 @@ export default (sql, urlQuery) => new Promise((resolve, reject) => {
 		}
 	}());
 
-	console.log("startDate is " + startDate)
-
 	var result = sql.replace(":startDate", startDate);
 
 	resolve(result);
