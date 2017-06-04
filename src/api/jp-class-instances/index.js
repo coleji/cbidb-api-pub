@@ -1,18 +1,15 @@
 import moment from 'moment';
+import objectHash from 'object-hash';
 
 import readQuery from '../../readQuery';
+import substitutions from './substitutions';
 
-const API_NAME = "ap-class-instances";
+const API_NAME = "jp-class-instances";
 
-const hashUrlQuery = () => "";
+const hashUrlQuery = query => objectHash({startDate: query.startDate});
 
-const getQuery = () => {
-	// TODO: instead of moment().year(), some way to call util_pkg.get_current_season
-	// would need some sort of api dependency tree to prevent cyclic self-calls
-	const substitutions = {}; // {year : String(params.season || moment().year())}
-	return readQuery(API_NAME).then(query => {
-		return Promise.resolve({query, substitutions})
-	});
+const getQuery = (urlQuery) => {
+	return readQuery(API_NAME).then(sql => substitutions(sql, urlQuery))
 }
 
 const memSave = (redisClient, json, bestByKeyName, query) => new Promise((resolve, reject) => {
@@ -34,7 +31,7 @@ const memLoad = (redisClient, query) => new Promise((resolve, reject) => {
 const bestBy = () => moment().add(1, 'minutes');
 
 const getFreshWithDB = (db, query) => new Promise((resolve, reject) => {
-	return getQuery().then(query => db.execute(query.query, {}, (err, results) => {
+	return getQuery(query).then(query => db.execute(query, {}, (err, results) => {
 		if (err) reject(err);
 		else resolve(results);
 	}));

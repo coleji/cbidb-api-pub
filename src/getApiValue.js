@@ -24,13 +24,13 @@ const isStale = (result) => {
 	return (result == null || moment(result[BEST_BY_KEY_NAME]) < moment())
 };
 
-const getFresh = spec => {
-	if (spec.getFresh) return spec.getFresh();
+const getFresh = (spec, query) => {
+	if (spec.getFresh) return spec.getFresh(query);
 	else if (spec.getFreshWithDB) {
 		return getConnection().then(c => {
 			var deferredErr;
 			var deferredResult;
-			return spec.getFreshWithDB(c).then(result => {
+			return spec.getFreshWithDB(c, query).then(result => {
 				deferredResult = result;
 			}, err => {
 				deferredErr = err;
@@ -54,10 +54,10 @@ const getFresh = spec => {
 export default function(api, query) {
 	let spec = getApiSpec(api, query);
 	if (!spec) return Promise.resolve(null);
-	return spec.memLoad(redisClient).then(result => {
+	return spec.memLoad(redisClient, query).then(result => {
 		if (isStale(result)) {
 			console.log("stale api; getting fresh");
-			return getFresh(spec).then(result => spec.memSave(redisClient, result, BEST_BY_KEY_NAME));
+			return getFresh(spec, query).then(result => spec.memSave(redisClient, result, BEST_BY_KEY_NAME, query));
 		} else {
 			console.log("still fresh; returning from redis")
 			return Promise.resolve(result);
