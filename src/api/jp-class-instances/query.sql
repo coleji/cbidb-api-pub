@@ -12,4 +12,4 @@ and i.type_id = t.type_id
 and i.location_id = l.location_id (+)
 and i.instructor_id = ins.instructor_id (+)
 and trunc(fs.session_datetime) = to_date(':startDate', 'MM/DD/YYYY')
-order by fs.session_datetime
+order by fs.session_datetime, t.display_order
