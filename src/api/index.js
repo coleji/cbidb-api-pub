@@ -1,5 +1,6 @@
 import apClassInstances from './ap-class-instances';
 import jpClassInstances from './jp-class-instances';
+import jpTeams from './jp-teams';
 import weather from './weather';
 
 const getSpec = (api, query) => {
@@ -8,6 +9,8 @@ const getSpec = (api, query) => {
 		return apClassInstances;
 	case "/jp-class-instances":
 		return jpClassInstances;
+	case "/jp-teams":
+		return jpTeams;
 	case "/weather":
 		return weather;
 	default:
