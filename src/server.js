@@ -6,6 +6,7 @@ var app = express();
 
 app.use((req, res) => {
 	getApiValue(req.path, req.query).then(result => {
+		res.set("access-control-allow-origin", "*");
 		res.send({data: result});
 	}, err => {
 		console.log("Error getting API: " + err);
